@@ -22,6 +22,7 @@ public class DeleteCategoryValidator implements Validator<CategoryDomain> {
     @Override
     public void execute(CategoryDomain data) {
         CategoryRule.executeValidation(data);
-        IdCategoryRule.executeValidation(data.getId());
+        //IdCategoryRule.executeValidation(data.getId());
+        CodeCategoryRule.executeValidation(data.getCode());
     }
 }

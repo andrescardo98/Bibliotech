@@ -51,5 +51,5 @@ public interface CategoryController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Categoría eliminada exitosamente"),
             @ApiResponse(responseCode = "400", description = "Categoría no eliminada"),
             @ApiResponse(responseCode = "500", description = "Problema inesperado al eliminar la categoría")})
-    ResponseEntity<Response<RequestCategory>> delete(@PathVariable("id") UUID uuid);
+    ResponseEntity<Response<RequestCategory>> delete(@PathVariable("categoryCode") String code);
 }

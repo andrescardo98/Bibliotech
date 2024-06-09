@@ -25,18 +25,32 @@ public class DeleteCategoryUseCase implements UseCase<CategoryDomain> {
     @Override
     public void execute(CategoryDomain domain) {
         DeleteCategoryValidator.ejecutar(domain);
-        validateExistenceRegister(domain.getId());
-        delete(domain.getId());
+        //validateExistenceRegisterById(domain.getId());
+        validateExistenceRegisterByCode(domain.getCode());
+        //delete(domain.getId());
+        deleteByCode(domain.getCode());
     }
 
     private final void delete(final UUID uuid){
         getCategoryDAO().delete(uuid);
     }
 
-    private final void validateExistenceRegister(final UUID uuid){
+    private final void deleteByCode(final String code){
+        getCategoryDAO().deleteByCode(code);
+    }
+
+    private final void validateExistenceRegisterById(final UUID uuid){
         final var results = getCategoryDAO().searchById(uuid);
         if (results.isEmpty()){
             var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000057);
+            throw ServiceBibliotechException.create(userMessage);
+        }
+    }
+
+    private final void validateExistenceRegisterByCode(final String code){
+        final var results = getCategoryDAO().searchByCode(code);
+        if (results.isEmpty()){
+            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000092);
             throw ServiceBibliotechException.create(userMessage);
         }
     }

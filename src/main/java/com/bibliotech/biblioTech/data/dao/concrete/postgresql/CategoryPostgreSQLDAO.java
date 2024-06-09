@@ -104,6 +104,30 @@ public final class CategoryPostgreSQLDAO extends SQLDAO implements CategoryDAO {
     }
 
     @Override
+    public final void deleteByCode(final String code) {
+        final var sentence = new StringBuilder();
+
+        sentence.append("DELETE FROM Category ");
+        sentence.append("WHERE code = ? ");
+
+        try (final var preparedSentence = getConnection().prepareStatement(sentence.toString())){
+
+            preparedSentence.setObject(1, code);
+
+            preparedSentence.executeUpdate();
+
+        }catch (final SQLException exception){
+            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000043);
+            var technicalMessage = MessagesCatalog.getMessageContent(MessageCode.M00000044);
+            throw DataBibliotechException.create(exception, userMessage, technicalMessage);
+        }catch (final Exception exception){
+            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000043);
+            var technicalMessage = MessagesCatalog.getMessageContent(MessageCode.M00000045);
+            throw DataBibliotechException.create(exception, userMessage, technicalMessage);
+        }
+    }
+
+    @Override
     public final Optional<CategoryEntity> searchById(final UUID id) {
         final var sentence = new StringBuilder();
         sentence.append("SELECT id, name, description, code ");
@@ -114,7 +138,7 @@ public final class CategoryPostgreSQLDAO extends SQLDAO implements CategoryDAO {
 
         try (final var preparedSentence = getConnection().prepareStatement(sentence.toString())){
             preparedSentence.setObject(1, id);
-            result = executeSearchById(preparedSentence);
+            result = executeSearch(preparedSentence);
 
         } catch (final DataBibliotechException exception){
             throw exception;
@@ -130,7 +154,34 @@ public final class CategoryPostgreSQLDAO extends SQLDAO implements CategoryDAO {
         return result;
     }
 
-    private final Optional<CategoryEntity> executeSearchById(final PreparedStatement preparedStatement){
+    @Override
+    public final Optional<CategoryEntity> searchByCode(final String code) {
+        final var sentence = new StringBuilder();
+        sentence.append("SELECT id, name, description, code ");
+        sentence.append("FROM Category ");
+        sentence.append("WHERE code = ? ");
+
+        Optional<CategoryEntity> result = Optional.empty();
+
+        try (final var preparedSentence = getConnection().prepareStatement(sentence.toString())){
+            preparedSentence.setObject(1, code);
+            result = executeSearch(preparedSentence);
+
+        } catch (final DataBibliotechException exception){
+            throw exception;
+        } catch (final SQLException exception){
+            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000039);
+            var technicalMessage = MessagesCatalog.getMessageContent(MessageCode.M00000041);
+            throw DataBibliotechException.create(exception, userMessage, technicalMessage);
+        } catch (final Exception exception){
+            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000039);
+            var technicalMessage = MessagesCatalog.getMessageContent(MessageCode.M00000042);
+            throw DataBibliotechException.create(exception, userMessage, technicalMessage);
+        }
+        return result;
+    }
+
+    private final Optional<CategoryEntity> executeSearch(final PreparedStatement preparedStatement){
         Optional<CategoryEntity> result = Optional.empty();
 
         try (final var results = preparedStatement.executeQuery()){

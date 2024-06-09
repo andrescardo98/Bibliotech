@@ -116,15 +116,15 @@ public final class CategoryControllerImpl implements CategoryController {
     }
 
     @Override
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Response<RequestCategory>> delete(@PathVariable("id") UUID uuid) {
+    @DeleteMapping("/code/{categoryCode}")
+    public ResponseEntity<Response<RequestCategory>> delete(@PathVariable("categoryCode") String code) {
         final Response<RequestCategory> response = new Response<>();
         HttpStatus httpStatusCode = HttpStatus.BAD_REQUEST;
 
         try {
             DeleteCategoryFacade facade = new DeleteCategoryFacade();
             var dto = CategoryDTO.create()
-                    .setId(uuid);
+                    .setCode(code);
             facade.execute(dto);
             httpStatusCode = HttpStatus.OK;
             response.getMessages().add(MessagesCatalog.getMessageContent(MessageCode.M00000090));

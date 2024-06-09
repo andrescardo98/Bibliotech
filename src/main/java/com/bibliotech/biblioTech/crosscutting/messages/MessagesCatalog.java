@@ -336,6 +336,13 @@ public class MessagesCatalog {
 
         addMessage(Message.create(MessageCode.M00000091, MessageType.USER, MessageCategory.ERROR,
                 "Se ha presentado un problema tratando eliminar una categoría"));
+
+
+        addMessage(Message.create(MessageCode.M00000092, MessageType.TECHNICIAN, MessageCategory.ERROR,
+                "No existe una categoría a eliminar con el código ingresado."));
+
+        addMessage(Message.create(MessageCode.M00000093, MessageType.TECHNICIAN, MessageCategory.ERROR,
+                "No existe una categoría a modificar con el código ingresado."));
     }
 
     private static final void addMessage(final Message message) {

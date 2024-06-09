@@ -14,9 +14,11 @@ public interface CategoryDAO {
 
     void delete(UUID id);
 
+    void deleteByCode(String code);
+
     Optional<CategoryEntity> searchById(UUID id);
 
-    //Optional<CategoryEntity> searchByCode(String code);
+    Optional<CategoryEntity> searchByCode(String code);
 
     List<CategoryEntity> search(CategoryEntity entity);
 }
