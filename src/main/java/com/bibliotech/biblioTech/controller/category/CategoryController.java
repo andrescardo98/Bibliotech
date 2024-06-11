@@ -32,6 +32,13 @@ public interface CategoryController {
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "code", required = false) String code);
 
+    @Operation(summary = "Obtener categoría por código", description = "Servicio encargado de obtener la información de las " +
+            "categorías que cumplan los parámetros de consulta")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Categoría consultada por código exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Problema con consulta por código de categoría"),
+            @ApiResponse(responseCode = "500", description = "Problema inesperado")})
+    ResponseEntity<Response<RequestCategory>> searchByCode(@PathVariable("categoryCode") String code);
+
 
     @Operation(summary = "Registrar categoría", description = "Servicio encargado de registrar la información de una categoría")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Categoría registrada exitosamente"),
@@ -46,6 +53,11 @@ public interface CategoryController {
             @ApiResponse(responseCode = "500", description = "Problema inesperado al modificar la categoría")})
     ResponseEntity<Response<RequestCategory>> modify(@PathVariable("id") UUID uuid, @RequestBody RequestCategory req);
 
+//    @Operation(summary = "Modificar categoría a partir del código", description = "Servicio encargado de modificar la información de una categoría")
+//    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Categoría modificada exitosamente"),
+//            @ApiResponse(responseCode = "400", description = "Categoría no modificada"),
+//            @ApiResponse(responseCode = "500", description = "Problema inesperado al modificar la categoría")})
+//    ResponseEntity<Response<RequestCategory>> modifyByCode(@PathVariable("categoryCode") String code, @RequestBody RequestCategory req);
 
     @Operation(summary = "Eliminar categoría", description = "Servicio encargado de eliminar de forma definitiva una categoría")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Categoría eliminada exitosamente"),

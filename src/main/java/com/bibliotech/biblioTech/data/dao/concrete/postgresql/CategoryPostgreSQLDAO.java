@@ -79,6 +79,33 @@ public final class CategoryPostgreSQLDAO extends SQLDAO implements CategoryDAO {
         }
     }
 
+//    @Override
+//    public final void modifyByCode(final CategoryEntity entity) {
+//        final var sentence = new StringBuilder();
+//
+//        sentence.append("UPDATE Category ");
+//        sentence.append("SET name = ?, description = ?, code = ? ");
+//        sentence.append("WHERE code = ? ");
+//
+//        try (final var preparedSentence = getConnection().prepareStatement(sentence.toString())){
+//
+//            preparedSentence.setString(1, entity.getName());
+//            preparedSentence.setString(2, entity.getDescription());
+//            preparedSentence.setString(3, entity.getCode());
+//
+//            preparedSentence.executeUpdate();
+//
+//        } catch (final SQLException exception){
+//            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000036);
+//            var technicalMessage = MessagesCatalog.getMessageContent(MessageCode.M00000037);
+//            throw DataBibliotechException.create(exception, userMessage, technicalMessage);
+//        } catch (final Exception exception){
+//            var userMessage = MessagesCatalog.getMessageContent(MessageCode.M00000036);
+//            var technicalMessage = MessagesCatalog.getMessageContent(MessageCode.M00000038);
+//            throw DataBibliotechException.create(exception, userMessage, technicalMessage);
+//        }
+//    }
+
     @Override
     public final void delete(final UUID id) {
         final var sentence = new StringBuilder();

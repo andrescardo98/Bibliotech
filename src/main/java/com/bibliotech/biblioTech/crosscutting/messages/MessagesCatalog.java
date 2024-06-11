@@ -343,6 +343,13 @@ public class MessagesCatalog {
 
         addMessage(Message.create(MessageCode.M00000093, MessageType.TECHNICIAN, MessageCategory.ERROR,
                 "No existe una categoría a modificar con el código ingresado."));
+
+        addMessage(Message.create(MessageCode.M00000094, MessageType.TECHNICIAN, MessageCategory.ERROR,
+                "La categoría fue consultada por código exitosamente"));
+
+        addMessage(Message.create(MessageCode.M00000095, MessageType.USER, MessageCategory.ERROR,
+                "Se ha presentado un problema tratando de llevar a cabo la consulta por " +
+                        "código de una categoría"));
     }
 
     private static final void addMessage(final Message message) {

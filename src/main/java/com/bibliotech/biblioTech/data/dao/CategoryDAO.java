@@ -12,6 +12,8 @@ public interface CategoryDAO {
 
     void modify(CategoryEntity entity);
 
+//    void modifyByCode(CategoryEntity entity);
+
     void delete(UUID id);
 
     void deleteByCode(String code);

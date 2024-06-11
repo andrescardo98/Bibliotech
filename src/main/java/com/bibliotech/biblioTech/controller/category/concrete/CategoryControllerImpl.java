@@ -19,9 +19,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5501")
 @RestController
 @RequestMapping("/api/v1/category")
 public final class CategoryControllerImpl implements CategoryController {
@@ -61,6 +62,31 @@ public final class CategoryControllerImpl implements CategoryController {
             httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             response.getMessages().add(MessagesCatalog.getMessageContent(MessageCode.M00000089));
             logger.error(MessagesCatalog.getMessageContent(MessageCode.M00000089), exception);
+        }
+        return new ResponseEntity<>(response, httpStatusCode);
+    }
+
+    @Override
+    @GetMapping("/code/{categoryCode}")
+    public ResponseEntity<Response<RequestCategory>> searchByCode(
+            @PathVariable("categoryCode") String code) {
+
+        final Response<RequestCategory> response = new Response<>();
+        HttpStatusCode httpStatusCode = HttpStatus.BAD_REQUEST;
+        var dto = CategoryDTO.create().setCode(code);
+
+        try {
+            SearchCategoryFacade facade = new SearchCategoryFacade();
+            response.setData(CategoryResponse.convertListToResponse(facade.execute(dto)));
+            httpStatusCode = HttpStatus.OK;
+            response.getMessages().add(MessagesCatalog.getMessageContent(MessageCode.M00000094));
+        } catch (final BiblioTechException exception){
+            response.getMessages().add(exception.getTechnicalMessage());
+            logger.error(exception.getTechnicalMessage(), exception.getRootException());
+        } catch (final Exception exception){
+            httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add(MessagesCatalog.getMessageContent(MessageCode.M00000095));
+            logger.error(MessagesCatalog.getMessageContent(MessageCode.M00000095), exception);
         }
         return new ResponseEntity<>(response, httpStatusCode);
     }
@@ -114,6 +140,34 @@ public final class CategoryControllerImpl implements CategoryController {
 
         return new ResponseEntity<>(response, httpStatusCode);
     }
+
+//    @PutMapping("/code/{categoryCode}")
+//    @Override
+//    public ResponseEntity<Response<RequestCategory>> modifyByCode(
+//            @PathVariable("categoryCode") String code, @RequestBody RequestCategory req) {
+//        final Response<RequestCategory> response = new Response<>();
+//        HttpStatusCode httpStatusCode = HttpStatus.BAD_REQUEST;
+//
+//        try {
+//            ModifyCategoryFacade facade = new ModifyCategoryFacade();
+//            var dto = CategoryDTO.create()
+//                    .setCode(code)
+//                    .setName(req.getName())
+//                    .setDescription(req.getDescription())
+//                    .setCode(req.getCode());
+//            facade.execute(dto);
+//            httpStatusCode = HttpStatus.OK;
+//            response.getMessages().add(MessagesCatalog.getMessageContent(MessageCode.M00000087));
+//        } catch (final BiblioTechException exception){
+//            response.getMessages().add(exception.getTechnicalMessage());
+//            logger.error(exception.getTechnicalMessage(), exception.getRootException());
+//        } catch (final Exception exception){
+//            response.getMessages().add(MessagesCatalog.getMessageContent(MessageCode.M00000077));
+//            logger.error(MessagesCatalog.getMessageContent(MessageCode.M00000077), exception);
+//        }
+//
+//        return new ResponseEntity<>(response, httpStatusCode);
+//    }
 
     @Override
     @DeleteMapping("/code/{categoryCode}")

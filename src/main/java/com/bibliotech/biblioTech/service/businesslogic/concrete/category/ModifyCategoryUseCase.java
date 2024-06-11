@@ -27,8 +27,12 @@ public class ModifyCategoryUseCase implements UseCase<CategoryDomain> {
     public void execute(CategoryDomain domain) {
         ModifyCategoryValidator.ejecutar(domain);
         validateExistenceRegister(domain.getId());
-        validateNonExistanceCategoryWithSameCode(domain.getCode());
-        validateNonExistanceCategoryWithSameName(domain.getName());
+        if (domain.getCode() != null && !domain.getCode().isEmpty()){
+            validateNonExistanceCategoryWithSameCode(domain.getCode());
+        }
+        if (domain.getName() != null && !domain.getName().isEmpty()){
+            validateNonExistanceCategoryWithSameName(domain.getName());
+        }
         upload(domain);
     }
 
